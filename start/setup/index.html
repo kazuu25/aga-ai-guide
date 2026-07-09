@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>はじめの設定 — AGA AI活用ガイド</title>
+<meta name="description" content="医療法人友広会 AGAメディカルクリニック / はじめてのAI活用ガイド。ClaudeとObsidianの使い方を、初心者向けにやさしく。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='30' y='30' width='40' height='40' transform='rotate(45 50 50)' fill='none' stroke='%23B69B67' stroke-width='7'/><rect x='41' y='41' width='18' height='18' transform='rotate(45 50 50)' fill='%23B69B67'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/base.css">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body><header class="sitenav"><div class="inner">
+  <a class="brand" href="../../"><span class="mk"></span><span class="bt">AGA AI活用ガイド</span></a>
+  <button class="navtoggle" aria-label="メニューを開閉" onclick="this.nextElementSibling.classList.toggle('open')"><span class="bar"></span>メニュー</button>
+  <nav class="links"><a href="../../start/" class="active">はじめる</a><a href="../../basics/">使い方</a><a href="../../examples/">実例</a><a href="../../topics/">もっと詳しく</a></nav>
+  </div></header><main class="wrap"><nav class="breadcrumb" aria-label="現在地"><a href="../../">ホーム</a><span class="sep">›</span><a href="../../start/">はじめる</a><span class="sep">›</span><span class="cur">はじめの設定</span></nav><div class="eyebrow">はじめる</div><h1 class="page-title">はじめの設定</h1><div class="rule"></div><div class="page-body"><p class="lead">
+    「まず何をやったらいいの？」に、ここで丸ごとお答えします。<b>用意するものは3つ</b>だけ。
+    上から順番にやれば、今日じゅうに<b>相棒と倉庫がつながった状態</b>までいけます。
+    つまずきやすいところは、そのつど<span style="color:var(--gold);font-weight:700">つまづきポイント</span>で先回りして書いておきました。
+  </p>
+
+  <!-- 用意するもの -->
+  <div class="prep">
+    <div class="p">
+      <div class="pn">01</div>
+      <div class="pt">Claudeアプリ</div>
+      <div class="pd">相棒の本体。パソコンに入れるアプリです。</div>
+      <span class="free">ダウンロードは無料</span>
+    </div>
+    <div class="p">
+      <div class="pn">02</div>
+      <div class="pt">Claudeの有料プラン</div>
+      <div class="pd">相棒（Claude Code）を動かすための契約。無料では使えません。</div>
+      <span class="free paid">月額 約20ドル〜</span>
+    </div>
+    <div class="p">
+      <div class="pn">03</div>
+      <div class="pt">Obsidian</div>
+      <div class="pd">記憶の倉庫。メモや資料をためておくアプリです。</div>
+      <span class="free">無料</span>
+    </div>
+  </div>
+
+  <div class="stepper">
+
+    <!-- STEP 1 -->
+    <div class="stp">
+      <div class="node">1</div>
+      <span class="stag">STEP 1</span>
+      <div class="stitle">Claudeの「アプリ版」をパソコンに入れる</div>
+      <div class="card">
+        <div class="how">
+          <div class="row"><span class="num">1</span><span class="rt">ブラウザで <span class="u">claude.ai/download</span> を開く</span></div>
+          <div class="row"><span class="num">2</span><span class="rt">自分のパソコンに合うほうをダウンロード<span class="sub">Mac（マック）版／Windows（ウィンドウズ）版、どちらか。パソコンが自動で見分けてくれます。</span></span></div>
+          <div class="row"><span class="num">3</span><span class="rt">ダウンロードしたファイルを開いてインストール<span class="sub">Mac＝Claudeのアイコンを「アプリケーション」フォルダにドラッグ。Windows＝ダウンロードしたファイルをダブルクリックして、案内どおり「次へ」を押していくだけ。</span></span></div>
+          <div class="row"><span class="num">4</span><span class="rt">アプリを開いて、Claudeのアカウントで<b>ログイン</b><span class="sub">初めてなら、メールアドレスかGoogleアカウントで登録できます。</span></span></div>
+        </div>
+        <div class="trap">
+          <div class="th"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ic-gold"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>つまづきポイント</div>
+          <b>「ブラウザで使うClaude」と「アプリ版」は別物</b>です。今回は必ず、パソコンにインストールする<b>“アプリ版（デスクトップアプリ）”</b>を入れてください。ブラウザのお気に入りに入れるだけではつながりません。
+          <div style="margin-top:9px"><span class="os">Windowsの方だけ</span>先に <span class="u">git-scm.com/downloads/win</span> から「Git for Windows」も入れておきます（案内どおり進めるだけ）。これが無いと相棒がうまく動かないことがあります。<b>Macの方は不要</b>です。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="stp">
+      <div class="node">2</div>
+      <span class="stag">STEP 2</span>
+      <div class="stitle">有料プランにする（相棒を動かす鍵）</div>
+      <div class="card">
+        <div class="oneline"><span class="lbl">一言でいうと</span>相棒（Claude Code）は<b>有料プランで動くようになります</b>。まず契約をすませておくと、あとが迷いません。</div>
+        <div class="how">
+          <div class="row"><span class="num">1</span><span class="rt">アプリ（またはブラウザ）の設定から<b>「プランをアップグレード」</b>を開く</span></div>
+          <div class="row"><span class="num">2</span><span class="rt"><b>Claude Pro（プロ）</b>を選ぶ<span class="sub">個人でしっかり使う方の定番。月額の目安は約20ドル（年払いなら約17ドル／月）。もっとたっぷり使うなら上位の Max（月100ドル〜）もあります。</span></span></div>
+          <div class="row"><span class="num">3</span><span class="rt">クレジットカードを登録して完了</span></div>
+        </div>
+        <div class="trap">
+          <div class="th"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ic-gold"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>つまづきポイント</div>
+          <b>無料プランのままだと</b>、次のSTEP 5で「フォルダを選ぶ」ところまで進めません。相棒を使うなら、先に有料にしておくのが近道です。<br>※料金は変わることがあります。契約画面に出る<b>最新の金額</b>をご確認ください（このページは2026年7月時点）。
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="stp">
+      <div class="node">3</div>
+      <span class="stag">STEP 3</span>
+      <div class="stitle">Obsidian（倉庫アプリ）を入れる</div>
+      <div class="card">
+        <div class="how">
+          <div class="row"><span class="num">1</span><span class="rt">ブラウザで <span class="u">obsidian.md/download</span> を開く</span></div>
+          <div class="row"><span class="num">2</span><span class="rt">自分のパソコン用（Mac／Windows）をダウンロードしてインストール</span></div>
+          <div class="row"><span class="num">3</span><span class="rt">これでOK。<b>Obsidianは無料</b>で使えます</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="stp">
+      <div class="node">4</div>
+      <span class="stag">STEP 4 ／ つまづき所①</span>
+      <div class="stitle">母体になる「倉庫フォルダ」を、1つ作る</div>
+      <div class="card">
+        <div class="oneline"><span class="lbl">一言でいうと</span>倉庫（＝<b>Vault／ボールト</b>）とは、パソコンの中の<b>“ただ1つのフォルダ”</b>。この中に、これから全部たまっていきます。</div>
+        <p style="font-size:13.5px;color:var(--text-soft);line-height:1.8;margin:2px 0 12px">いちばんかんたんなのは、Obsidianに作ってもらう方法です。</p>
+        <div class="how">
+          <div class="row"><span class="num">1</span><span class="rt">Obsidianを開く</span></div>
+          <div class="row"><span class="num">2</span><span class="rt">最初の画面で <b>「Create new vault（新しい保管庫を作る）」</b> を選ぶ</span></div>
+          <div class="row"><span class="num">3</span><span class="rt">名前を入れる<span class="sub">例：<span class="u">AGAOS</span>。あとで変えられるので何でもOK。半角の英数字にしておくと、後がラクです。</span></span></div>
+          <div class="row"><span class="num">4</span><span class="rt"><b>「Browse」</b>で保存する場所を選ぶ<span class="sub">迷ったら「書類（Documents）」でOK。</span></span></div>
+          <div class="row"><span class="num">5</span><span class="rt"><b>「Create」</b>を押す → 倉庫フォルダが1つ、できあがり</span></div>
+        </div>
+        <div class="point"><span class="k">できたものの正体</span><span>たとえば <span class="u">書類（Documents）／AGAOS</span> という<b>“フォルダ”が1つ</b>できています。これが、これからずっと使う倉庫です。中身は今は空っぽでかまいません。</span></div>
+        <div class="trap">
+          <div class="th"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ic-gold"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>つまづきポイント</div>
+          倉庫は<b>あちこちに作らず、1つだけ</b>。場所は<b>「書類（Documents）」</b>に置くのがおすすめです。いろんな場所に作ると、次のSTEP 5で「どれだっけ？」と迷子になります。
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="stp">
+      <div class="node">5</div>
+      <span class="stag">STEP 5 ／ つまづき所②（いちばん大事）</span>
+      <div class="stitle">倉庫と相棒（Claude Code）を、つなぐ</div>
+      <div class="card">
+        <div class="oneline"><span class="lbl">一言でいうと</span>Claudeのアプリで、さっき作った<b>“倉庫フォルダ”を開く</b>だけ。ここが「どれを選ぶ？」で一番迷うところなので、ゆっくりいきましょう。</div>
+        <div class="how">
+          <div class="row"><span class="num">1</span><span class="rt">Claudeデスクトップアプリを開く</span></div>
+          <div class="row"><span class="num">2</span><span class="rt">画面の上にあるタブから <b>「Code（コード）」</b> を選ぶ<span class="sub">この「Code」が、相棒＝Claude Codeの作業場です。</span></span></div>
+          <div class="row"><span class="num">3</span><span class="rt">動かす場所は <b>「Local（ローカル）」</b> を選ぶ<span class="sub">＝あなたのパソコンの中で動かす、という意味です。</span></span></div>
+          <div class="row"><span class="num">4</span><span class="rt"><b>「Select folder（フォルダを選ぶ）」</b> を押す</span></div>
+          <div class="row"><span class="num">5</span><span class="rt">さっき作った<b>倉庫フォルダ</b>（例：書類／AGAOS）を選んで「開く」</span></div>
+          <div class="row"><span class="num">6</span><span class="rt">最後にモデルを選ぶ画面が出たら、<b>そのままでOK</b></span></div>
+        </div>
+        <div class="trap">
+          <div class="th"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ic-gold"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>いちばんのつまづきポイント：選ぶのは「フォルダ」です</div>
+          選ぶのは、倉庫<b>まるごとの“フォルダ”</b>。ファイルではありません。<br>
+          <span class="ng">✗ ちがう</span>　中の1つのメモ（<span class="u">○○.md</span>）をダブルクリックして選ぶ<br>
+          <span class="ng">✗ ちがう</span>　倉庫の中にある小さいフォルダ“だけ”を選ぶ<br>
+          <span class="ok">○ 正しい</span>　倉庫フォルダ“そのもの”を1回クリックして「開く」（中に入って選ばない）
+        </div>
+        <div class="point"><span class="k">つながった合図</span><span>相棒に<b>「この倉庫に“はじめまして”というメモを作って」</b>と頼んでみてください。倉庫の中にファイルができれば、連携は成功です。</span></div>
+        <div class="example">
+          <div class="el"><span class="avatar">山</span>山本和幸の使い方</div>
+          <div class="ex">「山本は『<b>AGAOS</b>』という1つの倉庫に、経営のすべて——数字・打ち合わせ・アイデア——をためて、そこで相棒と仕事をしています。<b>倉庫と相棒がつながっている</b>から、何を聞いてもすぐ話が通じます。最初のこの設定さえすめば、あとはずっと開くだけです。」</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="done">
+    <div class="dh"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ic-gold"><path d="M20 6 9 17l-5-5"/></svg>これで準備完了です</div>
+    <div class="dd">おつかれさまでした。あとは上の<b>「全体像（たった4つ）」</b>に戻って、<b>スクショを送る・話しかける</b>だけ。今日から相棒が、あなたの毎日を手伝ってくれます。つまずいたら、その画面をそのままスクショして相棒に見せて聞けば大丈夫です。</div>
+  </div></div><nav class="pagenav" aria-label="ページ移動"><a class="prev" href="../../start/overview/"><span class="pl">← まえへ</span><span class="pt">AIの全体像</span></a><a class="next" href="../../basics/talk/"><span class="pl">つぎへ →</span><span class="pt">伝え方 — あきらめない</span></a><a class="tohome" href="../../"><span class="pt">↑ ホーム（目次）にもどる</span></a></nav></main><footer class="sitemapf">
+  <div class="cols"><div class="col"><h4><a href="../../start/">はじめる</a></h4><a href="../../start/overview/">AIの全体像</a><a href="../../start/setup/">はじめの設定</a></div><div class="col"><h4><a href="../../basics/">使い方</a></h4><a href="../../basics/talk/">伝え方 — あきらめない</a><a href="../../basics/record/">記録 — 第二の脳</a></div><div class="col"><h4><a href="../../examples/">実例</a></h4><a href="../../examples/cases/">じっさいの使い方</a></div><div class="col"><h4><a href="../../topics/">もっと詳しく</a></h4><span class="dim">会議の録音を議事録にする（準備中）</span><span class="dim">レシート写真を経費表にする（準備中）</span><span class="dim">業務を自動化する仕組みの頼み方（準備中）</span><span class="dim">「続きから」で再開するコツ（準備中）</span><span class="dim">フォルダの分け方・ため方（準備中）</span></div></div>
+  <div class="fbottom">
+    <div class="fb"><span class="fm"></span>医療法人友広会　AGAメディカルクリニック</div>
+    <div class="fn">はじめてのAI活用ガイド ／ 内容は随時アップデートされます</div>
+  </div>
+</footer><script>
+document.querySelectorAll('.sitenav .links a').forEach(function(a){a.addEventListener('click',function(){var l=a.closest('.links');if(l)l.classList.remove('open');});});
+</script>
+</body></html>

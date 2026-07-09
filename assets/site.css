@@ -1,0 +1,112 @@
+/* =========================================================
+   AI活用ガイド — マルチページ（階層サイト）用の追加スタイル
+   base.css（A-Forestトークン＋部品）に積み増す。色は必ずトークン経由。
+   ========================================================= */
+
+/* ---- 固定ナビ（全ページ共通） ---- */
+.sitenav{position:sticky;top:0;z-index:60;background:var(--nav-bg);
+  -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);border-bottom:1px solid var(--hairline)}
+.sitenav .inner{max-width:var(--maxw);margin:0 auto;padding:0 22px;height:58px;display:flex;align-items:center;gap:14px}
+.sitenav .brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex:0 0 auto}
+.sitenav .brand .mk{width:22px;height:22px;border:1.5px solid var(--gold);transform:rotate(45deg);position:relative;flex:0 0 auto}
+.sitenav .brand .mk::after{content:"";position:absolute;inset:5px;background:var(--gold)}
+.sitenav .brand .bt{font-family:var(--serif);font-weight:600;font-size:15px;color:var(--heading);letter-spacing:.05em;white-space:nowrap}
+.sitenav .links{margin-left:auto;display:flex;gap:6px;align-items:center}
+.sitenav .links a{font-size:13px;color:var(--text);text-decoration:none;border:1px solid transparent;border-radius:999px;padding:6px 14px;letter-spacing:.02em;white-space:nowrap;transition:border-color .15s,background .15s,color .15s}
+.sitenav .links a:hover{border-color:var(--gold)}
+.sitenav .links a.active{background:var(--forest);color:#fff}
+.navtoggle{display:none;margin-left:auto;align-items:center;gap:8px;background:none;border:1px solid var(--hairline);border-radius:9px;padding:7px 12px;color:var(--heading);font-size:13px;font-family:var(--sans);cursor:pointer}
+.navtoggle .bar{display:block;width:16px;height:2px;background:currentColor;position:relative}
+.navtoggle .bar::before,.navtoggle .bar::after{content:"";position:absolute;left:0;width:16px;height:2px;background:currentColor}
+.navtoggle .bar::before{top:-5px}.navtoggle .bar::after{top:5px}
+@media (max-width:720px){
+  .sitenav .links{position:absolute;left:0;right:0;top:58px;flex-direction:column;gap:0;align-items:stretch;
+    background:var(--bg);border-bottom:1px solid var(--hairline);padding:4px 22px 12px;display:none;box-shadow:0 12px 24px rgba(0,0,0,.08)}
+  .sitenav .links.open{display:flex}
+  .sitenav .links a{padding:13px 4px;border:none;border-bottom:1px solid var(--hairline);border-radius:0;text-align:left;font-size:15.5px}
+  .sitenav .links a:last-child{border-bottom:none}
+  .sitenav .links a.active{background:none;color:var(--heading);font-weight:700}
+  .navtoggle{display:inline-flex}
+}
+
+/* ---- パンくず ---- */
+.breadcrumb{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;color:var(--text-soft);letter-spacing:.02em;margin:26px 0 8px}
+.breadcrumb a{color:var(--text-soft);text-decoration:none}
+.breadcrumb a:hover{color:var(--gold)}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .cur{color:var(--heading);font-weight:600}
+
+/* ---- ページ見出し ---- */
+.page-title{font-family:var(--serif);font-weight:600;font-size:clamp(24px,5vw,33px);letter-spacing:.04em;line-height:1.4;color:var(--heading);margin-top:4px;text-wrap:balance}
+.page-body{margin-top:6px}
+
+/* ---- 前へ／次へ／ホーム ---- */
+.pagenav{display:flex;gap:12px;align-items:stretch;margin:44px 0 6px;flex-wrap:wrap}
+.pagenav a{flex:1 1 42%;min-width:190px;display:flex;flex-direction:column;gap:3px;background:var(--card);border:1px solid var(--hairline);border-radius:12px;padding:14px 18px;text-decoration:none;transition:border-color .15s,transform .15s}
+.pagenav a:hover{border-color:var(--gold);transform:translateY(-1px)}
+.pagenav a.next{text-align:right;align-items:flex-end}
+.pagenav .pl{font-size:11px;letter-spacing:.1em;color:var(--gold);font-weight:600}
+.pagenav .pt{font-size:14.5px;color:var(--heading);font-weight:600;font-family:var(--serif);line-height:1.4}
+.pagenav a.tohome{flex:0 0 100%;min-width:0;align-items:center;text-align:center}
+.pagenav a.tohome .pt{font-family:var(--sans);font-size:13px;color:var(--text-soft);font-weight:500}
+
+/* ---- ホーム：ヒーロー ---- */
+.home-hero{background:linear-gradient(150deg,var(--hero-from) 0%,var(--hero-to) 70%,var(--hero-from) 100%);color:#fff;position:relative;overflow:hidden}
+.home-hero::after{content:"";position:absolute;right:-90px;top:-80px;width:280px;height:280px;border:1px solid rgba(182,155,103,.22);transform:rotate(45deg)}
+.home-hero .inner{max-width:var(--maxw);margin:0 auto;padding:56px 22px 60px;position:relative;z-index:1}
+.home-hero .eyebrow{font-size:11px;letter-spacing:.3em;color:var(--gold)}
+.home-hero .eyebrow span{color:rgba(255,255,255,.5);margin:0 9px}
+.home-hero .mk2{width:30px;height:30px;border:1.5px solid var(--gold);transform:rotate(45deg);position:relative;margin:18px 0 26px}
+.home-hero .mk2::after{content:"";position:absolute;inset:7px;background:var(--gold)}
+.home-hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,7vw,48px);letter-spacing:.06em;line-height:1.5;text-wrap:balance}
+.home-hero .grule{width:60px;height:1px;background:var(--gold);margin:24px 0 20px}
+.home-hero .sub{font-size:clamp(14.5px,2.4vw,17px);color:rgba(255,255,255,.9);line-height:1.95;max-width:42em}
+.home-hero .cta{display:inline-flex;align-items:center;gap:10px;margin-top:28px;background:var(--gold);color:#231c0d;font-weight:700;font-size:14.5px;letter-spacing:.03em;padding:13px 24px;border-radius:999px;text-decoration:none;transition:filter .15s,transform .15s}
+.home-hero .cta:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.home-hero .cta .a2{font-weight:500;opacity:.85;font-size:12.5px}
+
+/* ---- ホーム：カテゴリカード ---- */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:6px 0}
+.cat-card{display:block;background:var(--card);border:1px solid var(--hairline);border-radius:14px;padding:22px 46px 22px 24px;text-decoration:none;transition:border-color .15s,transform .15s;position:relative}
+.cat-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.cat-card .cnum{font-family:var(--serif);font-size:12px;color:var(--gold);letter-spacing:.16em}
+.cat-card .cttl{font-family:var(--serif);font-size:19px;color:var(--heading);font-weight:600;margin-top:7px}
+.cat-card .cdesc{font-size:13px;color:var(--text-soft);line-height:1.75;margin-top:9px}
+.cat-card .cpages{font-size:11.5px;color:var(--gold);letter-spacing:.03em;margin-top:14px;font-weight:600}
+.cat-card .carrow{position:absolute;top:22px;right:20px;color:var(--gold);transition:transform .15s}
+.cat-card:hover .carrow{transform:translateX(3px)}
+
+/* ---- カテゴリ内：ページ一覧 ---- */
+.cat-intro{font-size:15px;line-height:1.95;color:var(--text);margin:2px 0 6px}
+.page-list{display:grid;grid-template-columns:1fr;gap:12px;margin:8px 0}
+.page-card{display:flex;gap:15px;align-items:flex-start;background:var(--card);border:1px solid var(--hairline);border-radius:12px;padding:18px 20px;text-decoration:none;transition:border-color .15s}
+.page-card:hover{border-color:var(--gold)}
+.page-card .pnum{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--tint);color:var(--heading);border:1px solid var(--hairline);font-family:var(--serif);font-weight:600;display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:1px}
+.page-card .pgx{flex:1;min-width:0}
+.page-card .pttl{font-family:var(--serif);font-size:16.5px;color:var(--heading);font-weight:600;display:flex;align-items:center;gap:9px}
+.page-card .pdesc{font-size:13px;color:var(--text-soft);line-height:1.7;margin-top:3px}
+.page-card .arw{flex:0 0 auto;color:var(--gold);align-self:center}
+.page-card.soon{cursor:default}
+.page-card.soon:hover{border-color:var(--hairline)}
+.page-card.soon .pttl{color:var(--text-soft)}
+.page-card .badge{flex:0 0 auto;font-size:10px;letter-spacing:.08em;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--tint);color:var(--text-soft);border:1px solid var(--hairline);align-self:center}
+.page-card .badge.live{background:var(--forest);color:#fff;border-color:var(--forest)}
+
+/* ---- フッター：サイトマップ ---- */
+.sitemapf{background:var(--card);border-top:1px solid var(--hairline);margin-top:64px}
+.sitemapf .cols{max-width:var(--maxw);margin:0 auto;padding:36px 22px 26px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.sitemapf .col h4{font-family:var(--serif);font-size:13px;color:var(--heading);letter-spacing:.05em;margin-bottom:11px}
+.sitemapf .col a{display:block;font-size:12.5px;color:var(--text-soft);text-decoration:none;padding:3px 0;transition:color .15s}
+.sitemapf .col a:hover{color:var(--gold)}
+.sitemapf .col span.dim{display:block;font-size:12px;color:var(--text-soft);opacity:.6;padding:3px 0}
+.sitemapf .fbottom{max-width:var(--maxw);margin:0 auto;padding:20px 22px 40px;display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:space-between;align-items:center;border-top:1px solid var(--hairline)}
+.sitemapf .fb{display:flex;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;color:var(--heading)}
+.sitemapf .fm{width:15px;height:15px;border:1.3px solid var(--gold);transform:rotate(45deg);position:relative;flex:0 0 auto}
+.sitemapf .fm::after{content:"";position:absolute;inset:4px;background:var(--gold)}
+.sitemapf .fn{font-size:11px;color:var(--text-soft);line-height:1.7}
+
+@media (max-width:720px){
+  .cat-grid{grid-template-columns:1fr}
+  .sitemapf .cols{grid-template-columns:1fr 1fr}
+  .pagenav a{flex:1 1 100%}
+}

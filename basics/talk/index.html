@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>伝え方 — あきらめない — AGA AI活用ガイド</title>
+<meta name="description" content="医療法人友広会 AGAメディカルクリニック / はじめてのAI活用ガイド。ClaudeとObsidianの使い方を、初心者向けにやさしく。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='30' y='30' width='40' height='40' transform='rotate(45 50 50)' fill='none' stroke='%23B69B67' stroke-width='7'/><rect x='41' y='41' width='18' height='18' transform='rotate(45 50 50)' fill='%23B69B67'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/base.css">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body><header class="sitenav"><div class="inner">
+  <a class="brand" href="../../"><span class="mk"></span><span class="bt">AGA AI活用ガイド</span></a>
+  <button class="navtoggle" aria-label="メニューを開閉" onclick="this.nextElementSibling.classList.toggle('open')"><span class="bar"></span>メニュー</button>
+  <nav class="links"><a href="../../start/">はじめる</a><a href="../../basics/" class="active">使い方</a><a href="../../examples/">実例</a><a href="../../topics/">もっと詳しく</a></nav>
+  </div></header><main class="wrap"><nav class="breadcrumb" aria-label="現在地"><a href="../../">ホーム</a><span class="sep">›</span><a href="../../basics/">使い方</a><span class="sep">›</span><span class="cur">伝え方 — あきらめない</span></nav><div class="eyebrow">使い方</div><h1 class="page-title">伝え方 — あきらめない</h1><div class="rule"></div><div class="page-body"><p class="lead">
+    使っていて<b>いちばん多いのは、「わからない」から手が止まってしまう</b>こと。でも実は、その<b>「わからない」を、そのまま相棒に伝えることが何より大事</b>です。
+    きれいな指示も、正しい言葉もいりません。人に「これ、どうしたらいい？」と相談するように、思ったまま話しかけてみてください。
+  </p>
+
+  <div class="oneline"><span class="lbl">いちばん大事なこと</span>「うまく言えない」「どこが分からないのかも分からない」——<b>その状態ごと、話していい</b>。あきらめずに話すほど、相棒は動いてくれます。</div>
+
+  <div class="diagram">
+    <svg class="dgm" viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="「わからない」と話しかけると相棒が動いてくれる。違ってももう一度話す、という会話ループの図">
+      <defs>
+        <marker id="ar-t" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path class="mkw" d="M0,0 L9,4.5 L0,9 Z"/></marker>
+        <marker id="arg-t" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path class="mkg" d="M0,0 L9,4.5 L0,9 Z"/></marker>
+      </defs>
+      <rect class="box" x="24" y="60" width="184" height="98" rx="14"/>
+      <text class="t" x="116" y="102" text-anchor="middle" font-size="14">あなた</text>
+      <text class="ts" x="116" y="128" text-anchor="middle" font-size="12">「わからない…」</text>
+      <rect class="hub" x="360" y="52" width="200" height="114" rx="16"/>
+      <text class="th serif" x="460" y="100" text-anchor="middle" font-size="19" font-weight="600">Claude Code</text>
+      <text x="460" y="128" text-anchor="middle" font-size="12" fill="rgba(255,255,255,.8)">話を聞いて、動く</text>
+      <rect class="box" x="716" y="60" width="172" height="98" rx="14"/>
+      <text class="t" x="802" y="100" text-anchor="middle" font-size="14">できた！</text>
+      <text class="ts" x="802" y="125" text-anchor="middle" font-size="11">ファイル・ページ・設定</text>
+      <line class="wire" x1="208" y1="106" x2="354" y2="106" marker-end="url(#ar-t)"/>
+      <text class="t" x="281" y="94" text-anchor="middle" font-size="11">① そのまま話す</text>
+      <line class="wire" x1="560" y1="106" x2="710" y2="106" marker-end="url(#ar-t)"/>
+      <text class="t" x="635" y="94" text-anchor="middle" font-size="11">② 動いてくれる</text>
+      <path class="wireg" d="M802 158 V212 H116 V164" marker-end="url(#arg-t)"/>
+      <text class="tg" x="459" y="232" text-anchor="middle" font-size="12">③ 違っても、あきらめず もう一度そのまま話すだけ</text>
+    </svg>
+    <div class="dgm-cap">会話を続けるほど、形になっていきます。「止まらないこと」が、いちばんのコツ。</div>
+  </div>
+
+  <p class="lead" style="margin-top:10px">伝える入口は、次の<b>3つ。どれでもOK</b>。とくに<b>声</b>がいちばんラクです。</p>
+  <div class="prep">
+    <div class="p">
+      <span class="pico ic-gold"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v3"/></svg></span>
+      <div class="pt">声で話す</div>
+      <div class="pd"><b>いちばんラク。</b>Typeless（タイプレス）などの音声サービスを使うと、打たずに“話すだけ”。人に相談するように語りかけられます。</div>
+    </div>
+    <div class="p">
+      <span class="pico ic-gold"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="9.5" r="1.5"/></svg></span>
+      <div class="pt">画面を見せる</div>
+      <div class="pd">言葉にしづらいものは<b>スクショ（画面の写真）</b>を貼るだけ。「これ」で伝わります。</div>
+    </div>
+    <div class="p">
+      <span class="pico ic-gold"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/></svg></span>
+      <div class="pt">文字で打つ</div>
+      <div class="pd">もちろん、キーボードで打ってもOK。短いひとことで大丈夫です。</div>
+    </div>
+  </div>
+
+  <div class="point"><span class="k">気づき</span><span>スクショは、<b>片手でパッと押せる“自分だけのショートカット”</b>にしておくと、撮るハードルが一気に下がります。やり方が分からなくても大丈夫——<b>「クロード（Claude）に聞いて、ショートカットを設定して」と頼めば、そのまま設定してくれます</b>。「設定のしかた自体」も相棒に頼める、と気づくと、ぐっとラクになります。</span></div>
+
+  <div class="example">
+    <div class="el"><span class="avatar">山</span>山本和幸の使い方</div>
+    <div class="ex">「山本も、分からない時は<b>『ちょっとこれ、分からないんだけど…』と、そのまま話しかける</b>ところから始めます。うまく言えなくても、あきらめずに会話を続ける。すると相棒が、ファイルを動かしたり、ページを作ったりして、形にしてくれます。<b>大事なのは、止まらずに話すこと</b>だけです。」</div>
+  </div></div><nav class="pagenav" aria-label="ページ移動"><a class="prev" href="../../start/setup/"><span class="pl">← まえへ</span><span class="pt">はじめの設定</span></a><a class="next" href="../../basics/record/"><span class="pl">つぎへ →</span><span class="pt">記録 — 第二の脳</span></a><a class="tohome" href="../../"><span class="pt">↑ ホーム（目次）にもどる</span></a></nav></main><footer class="sitemapf">
+  <div class="cols"><div class="col"><h4><a href="../../start/">はじめる</a></h4><a href="../../start/overview/">AIの全体像</a><a href="../../start/setup/">はじめの設定</a></div><div class="col"><h4><a href="../../basics/">使い方</a></h4><a href="../../basics/talk/">伝え方 — あきらめない</a><a href="../../basics/record/">記録 — 第二の脳</a></div><div class="col"><h4><a href="../../examples/">実例</a></h4><a href="../../examples/cases/">じっさいの使い方</a></div><div class="col"><h4><a href="../../topics/">もっと詳しく</a></h4><span class="dim">会議の録音を議事録にする（準備中）</span><span class="dim">レシート写真を経費表にする（準備中）</span><span class="dim">業務を自動化する仕組みの頼み方（準備中）</span><span class="dim">「続きから」で再開するコツ（準備中）</span><span class="dim">フォルダの分け方・ため方（準備中）</span></div></div>
+  <div class="fbottom">
+    <div class="fb"><span class="fm"></span>医療法人友広会　AGAメディカルクリニック</div>
+    <div class="fn">はじめてのAI活用ガイド ／ 内容は随時アップデートされます</div>
+  </div>
+</footer><script>
+document.querySelectorAll('.sitenav .links a').forEach(function(a){a.addEventListener('click',function(){var l=a.closest('.links');if(l)l.classList.remove('open');});});
+</script>
+</body></html>
