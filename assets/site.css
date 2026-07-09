@@ -7,18 +7,25 @@
 .sitenav{position:sticky;top:0;z-index:60;background:var(--nav-bg);
   -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);border-bottom:1px solid var(--hairline)}
 .sitenav .inner{max-width:var(--maxw);margin:0 auto;padding:0 22px;height:58px;display:flex;align-items:center;gap:14px}
-.sitenav .brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex:0 0 auto}
+.sitenav .brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex:0 0 auto;margin-right:auto}
 .sitenav .brand .mk{width:22px;height:22px;border:1.5px solid var(--gold);transform:rotate(45deg);position:relative;flex:0 0 auto}
 .sitenav .brand .mk::after{content:"";position:absolute;inset:5px;background:var(--gold)}
 .sitenav .brand .bt{font-family:var(--serif);font-weight:600;font-size:15px;color:var(--heading);letter-spacing:.05em;white-space:nowrap}
-.sitenav .links{margin-left:auto;display:flex;gap:6px;align-items:center}
+.sitenav .links{display:flex;gap:6px;align-items:center}
 .sitenav .links a{font-size:13px;color:var(--text);text-decoration:none;border:1px solid transparent;border-radius:999px;padding:6px 14px;letter-spacing:.02em;white-space:nowrap;transition:border-color .15s,background .15s,color .15s}
 .sitenav .links a:hover{border-color:var(--gold)}
 .sitenav .links a.active{background:var(--forest);color:#fff}
-.navtoggle{display:none;margin-left:auto;align-items:center;gap:8px;background:none;border:1px solid var(--hairline);border-radius:9px;padding:7px 12px;color:var(--heading);font-size:13px;font-family:var(--sans);cursor:pointer}
+.navtoggle{display:none;align-items:center;gap:8px;background:none;border:1px solid var(--hairline);border-radius:9px;padding:7px 12px;color:var(--heading);font-size:13px;font-family:var(--sans);cursor:pointer}
 .navtoggle .bar{display:block;width:16px;height:2px;background:currentColor;position:relative}
 .navtoggle .bar::before,.navtoggle .bar::after{content:"";position:absolute;left:0;width:16px;height:2px;background:currentColor}
 .navtoggle .bar::before{top:-5px}.navtoggle .bar::after{top:5px}
+/* 配色切替ボタン（ダーク⇄ライト・選択は記憶） */
+.themebtn{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:37px;height:37px;background:var(--card);border:1px solid var(--hairline);border-radius:999px;color:var(--heading);cursor:pointer;transition:border-color .15s,color .15s,background .15s}
+.themebtn:hover{border-color:var(--gold);color:var(--gold)}
+.themebtn .ic-sun{display:none}
+.themebtn .ic-moon{display:inline-flex}
+:root[data-theme="dark"] .themebtn .ic-sun{display:inline-flex}
+:root[data-theme="dark"] .themebtn .ic-moon{display:none}
 @media (max-width:720px){
   .sitenav .links{position:absolute;left:0;right:0;top:58px;flex-direction:column;gap:0;align-items:stretch;
     background:var(--bg);border-bottom:1px solid var(--hairline);padding:4px 22px 12px;display:none;box-shadow:0 12px 24px rgba(0,0,0,.08)}

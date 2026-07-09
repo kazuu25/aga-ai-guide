@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<script>(function(){try{var t=localStorage.getItem('aga-theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>伝え方 — あきらめない — AGA AI活用ガイド</title>
@@ -14,8 +15,12 @@
 </head>
 <body><header class="sitenav"><div class="inner">
   <a class="brand" href="../../"><span class="mk"></span><span class="bt">AGA AI活用ガイド</span></a>
-  <button class="navtoggle" aria-label="メニューを開閉" onclick="this.nextElementSibling.classList.toggle('open')"><span class="bar"></span>メニュー</button>
   <nav class="links"><a href="../../start/">はじめる</a><a href="../../basics/" class="active">使い方</a><a href="../../examples/">実例</a><a href="../../topics/">もっと詳しく</a></nav>
+  <button class="themebtn" onclick="AGAtheme()" aria-label="配色（ダーク／ライト）を切り替え" title="配色を切り替え">
+    <svg class="ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6l1.4 1.4M19 5l-1.4 1.4M6.4 17.6 5 19"/></svg>
+    <svg class="ic-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8z"/></svg>
+  </button>
+  <button class="navtoggle" aria-label="メニューを開閉" onclick="document.querySelector('.sitenav .links').classList.toggle('open')"><span class="bar"></span>メニュー</button>
   </div></header><main class="wrap"><nav class="breadcrumb" aria-label="現在地"><a href="../../">ホーム</a><span class="sep">›</span><a href="../../basics/">使い方</a><span class="sep">›</span><span class="cur">伝え方 — あきらめない</span></nav><div class="eyebrow">使い方</div><h1 class="page-title">伝え方 — あきらめない</h1><div class="rule"></div><div class="page-body"><p class="lead">
     使っていて<b>いちばん多いのは、「わからない」から手が止まってしまう</b>こと。でも実は、その<b>「わからない」を、そのまま相棒に伝えることが何より大事</b>です。
     きれいな指示も、正しい言葉もいりません。人に「これ、どうしたらいい？」と相談するように、思ったまま話しかけてみてください。
@@ -79,6 +84,7 @@
     <div class="fn">はじめてのAI活用ガイド ／ 内容は随時アップデートされます</div>
   </div>
 </footer><script>
+function AGAtheme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);try{localStorage.setItem('aga-theme',n);}catch(e){}}
 document.querySelectorAll('.sitenav .links a').forEach(function(a){a.addEventListener('click',function(){var l=a.closest('.links');if(l)l.classList.remove('open');});});
 </script>
 </body></html>
