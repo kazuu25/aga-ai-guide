@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIのはじめ方 — AGAメディカルクリニック AI活用ガイド</title>
+<meta name="description" content="はじめてのAI活用ガイド。ClaudeとObsidianをパソコンに入れて、相棒とつなぐところまで、ひとつずつ。医療法人友広会 AGAメディカルクリニック。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   AGAメディカルクリニック — AI活用ガイド（育てるWeb版）
+   デザイン正本: A-Forest（wiki/デザインシステム.md）
+   基調 = 深緑 #1C3A2E × シャンパンゴールド #B69B67
+   フォント = 明朝(見出し) Shippori Mincho / ゴシック(本文) Noto Sans JP
+   ※Webフォントが読めない環境では Hiragino / Yu 系にフォールバック
+   ========================================================= */
+
+/* ---- トークン（明＝ブランド正本の配色） ---- */
+:root{
+  --forest:#1C3A2E; --forest2:#234536; --gold:#B69B67; --gold2:#CBB68C; --support:#5F7A6A;
+
+  --bg:#F7F5F1; --card:#FFFFFF; --hairline:#E3E0DA;
+  --text:#1A1A1A; --text-soft:#5A5F66; --heading:#1C3A2E;
+  --tint:#EEF2EF;                      /* forest-tint：アイコンチップ・注意枠の地 */
+  --point-bg:#EFE7D6; --point-ink:#5B4E33;
+  --trap-bg:#F1EEE7; --trap-ink:#3A4A40;
+  --u-bg:#EEF2EF; --u-ink:#1C3A2E;     /* URL/コマンドのチップ */
+  --nav-bg:rgba(247,245,241,.90);
+  --hero-from:#1C3A2E; --hero-to:#234536;
+  --wire:#1C3A2E;                      /* 図の線・グリフ */
+
+  --serif:'Shippori Mincho','Hiragino Mincho ProN','YuMincho','Yu Mincho',serif;
+  --sans:'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;
+  --mono:'SFMono-Regular',Menlo,Consolas,'Courier New',monospace;
+  --maxw:920px;
+}
+
+/* ---- トークン（暗＝OS設定に追従。深緑を地にした夜モード） ---- */
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#141F19; --card:#1D2C24; --hairline:#2E4034;
+    --text:#EAE7DF; --text-soft:#A6B0A8; --heading:#EAE3D5;
+    --tint:#22332B;
+    --point-bg:#26271E; --point-ink:#DAC79C;
+    --trap-bg:#20302A; --trap-ink:#C3D2C8;
+    --u-bg:#20302A; --u-ink:#DBE6DE;
+    --nav-bg:rgba(18,28,22,.90);
+    --hero-from:#0E1712; --hero-to:#1C3A2E;
+    --wire:#8AA093;
+  }
+}
+/* 閲覧者のテーマ切替（ルートに data-theme が押される）→ メディアクエリより優先 */
+:root[data-theme="light"]{
+  --bg:#F7F5F1; --card:#FFFFFF; --hairline:#E3E0DA;
+  --text:#1A1A1A; --text-soft:#5A5F66; --heading:#1C3A2E;
+  --tint:#EEF2EF; --point-bg:#EFE7D6; --point-ink:#5B4E33;
+  --trap-bg:#F1EEE7; --trap-ink:#3A4A40; --u-bg:#EEF2EF; --u-ink:#1C3A2E;
+  --nav-bg:rgba(247,245,241,.90); --hero-from:#1C3A2E; --hero-to:#234536; --wire:#1C3A2E;
+}
+:root[data-theme="dark"]{
+  --bg:#141F19; --card:#1D2C24; --hairline:#2E4034;
+  --text:#EAE7DF; --text-soft:#A6B0A8; --heading:#EAE3D5;
+  --tint:#22332B; --point-bg:#26271E; --point-ink:#DAC79C;
+  --trap-bg:#20302A; --trap-ink:#C3D2C8; --u-bg:#20302A; --u-ink:#DBE6DE;
+  --nav-bg:rgba(18,28,22,.90); --hero-from:#0E1712; --hero-to:#1C3A2E; --wire:#8AA093;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);
+  line-height:1.85;font-size:15.5px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+
+a{color:inherit}
+b,strong{font-weight:700;color:var(--heading)}
+::selection{background:rgba(182,155,103,.28)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+
+/* ============ ヘッダー / ナビ ============ */
+.topbar{position:sticky;top:0;z-index:50;background:var(--nav-bg);
+  -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);border-bottom:1px solid var(--hairline)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;height:56px}
+.brand{display:flex;align-items:center;gap:11px;flex:0 0 auto;text-decoration:none}
+.mk{width:22px;height:22px;border:1.5px solid var(--gold);transform:rotate(45deg);position:relative;flex:0 0 auto}
+.mk::after{content:"";position:absolute;inset:5px;background:var(--gold)}
+.brand .bt{font-family:var(--serif);font-weight:600;font-size:15px;color:var(--heading);letter-spacing:.06em;white-space:nowrap}
+nav{margin-left:auto;display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{font-size:12.5px;color:var(--text);text-decoration:none;border:1px solid var(--hairline);
+  background:var(--card);border-radius:999px;padding:5px 13px;letter-spacing:.04em;white-space:nowrap;transition:border-color .15s,background .15s,color .15s}
+nav a:hover{border-color:var(--gold)}
+nav a.active{background:var(--forest);color:#fff;border-color:var(--forest)}
+
+/* ============ ヒーロー ============ */
+.hero{background:linear-gradient(150deg,var(--hero-from) 0%,var(--hero-to) 70%,var(--hero-from) 100%);color:#fff;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-80px;top:-80px;width:280px;height:280px;border:1px solid rgba(182,155,103,.22);transform:rotate(45deg)}
+.hero .wrap{padding:54px 22px 60px;position:relative;z-index:1}
+.hero .eyebrow{font-size:11px;letter-spacing:.32em;color:var(--gold)}
+.hero .eyebrow span{color:rgba(255,255,255,.5);margin:0 9px}
+.hero .mk2{width:30px;height:30px;border:1.5px solid var(--gold);transform:rotate(45deg);position:relative;margin:20px 0 30px}
+.hero .mk2::after{content:"";position:absolute;inset:7px;background:var(--gold)}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(31px,7vw,46px);letter-spacing:.06em;line-height:1.5;text-wrap:balance}
+.hero .grule{width:60px;height:1px;background:var(--gold);margin:26px 0 22px}
+.hero .sub{font-size:clamp(15px,2.4vw,18px);letter-spacing:.06em;color:rgba(255,255,255,.92)}
+.hero .sub2{font-size:14px;line-height:1.9;color:rgba(255,255,255,.72);margin-top:12px;max-width:40em}
+.hero .living{display:inline-flex;align-items:center;gap:8px;margin-top:26px;border:1px solid rgba(182,155,103,.55);
+  color:var(--gold);font-size:12px;letter-spacing:.08em;padding:7px 15px;border-radius:999px}
+.hero .living .pulse{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(182,155,103,.6);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(182,155,103,.55)}70%{box-shadow:0 0 0 7px rgba(182,155,103,0)}100%{box-shadow:0 0 0 0 rgba(182,155,103,0)}}
+
+/* ============ セクション共通 ============ */
+section.block{padding:52px 0 8px}
+.eyebrow{font-size:10.5px;letter-spacing:.3em;color:var(--gold);font-weight:600}
+h2.title{font-family:var(--serif);font-weight:600;font-size:clamp(22px,4.4vw,29px);letter-spacing:.05em;line-height:1.45;color:var(--heading);margin-top:10px;text-wrap:balance}
+.rule{width:52px;height:1px;background:var(--gold);margin:16px 0 24px}
+.lead{font-size:15.5px;line-height:2;color:var(--text)}
+.lead b{color:var(--heading)}
+
+/* URL / コマンドのチップ */
+.u{font-family:var(--mono);font-size:.92em;background:var(--u-bg);color:var(--u-ink);
+  border:1px solid var(--hairline);border-radius:6px;padding:2px 8px;letter-spacing:.02em;word-break:break-all}
+
+/* 2つの道具カード */
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0}
+.tool{background:var(--card);border:1px solid var(--hairline);border-radius:12px;padding:18px 20px}
+.tool .tn{font-family:var(--serif);font-size:16px;color:var(--heading);font-weight:600;display:flex;align-items:center;gap:9px}
+.tool .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+.tool .td{font-size:13.5px;color:var(--text-soft);line-height:1.8;margin-top:9px}
+.tool .td b{color:var(--heading)}
+
+/* 図解 */
+.diagram{background:var(--card);border:1px solid var(--hairline);border-radius:14px;padding:20px 16px 10px;margin:20px 0 6px;overflow-x:auto}
+.diagram svg{width:100%;min-width:520px;height:auto;display:block}
+.dgm .box{fill:var(--card);stroke:var(--hairline);stroke-width:1}
+.dgm .hub{fill:var(--forest);stroke:var(--forest)}
+.dgm .g{fill:none;stroke:var(--wire);stroke-width:1.6}
+.dgm .gg{fill:none;stroke:var(--gold);stroke-width:1.6}
+.dgm text{font-family:var(--sans)}
+.dgm .t{fill:var(--text);font-weight:600}
+.dgm .ts{fill:var(--text-soft)}
+.dgm .th{fill:#fff}
+.dgm .tg{fill:var(--gold)}
+.dgm .wire{stroke:var(--wire);stroke-width:1.8;fill:none}
+.dgm .wireg{stroke:var(--gold);stroke-width:1.8;fill:none}
+.dgm-cap{text-align:center;font-size:12px;color:var(--text-soft);letter-spacing:.04em;margin-top:2px}
+/* SVGアイコンの着色：プレゼン属性ではCSS変数が効かないため、クラス／currentColorで着色する */
+.dgm .mkw{fill:var(--wire)}
+.dgm .mkg{fill:var(--gold)}
+.dgm .serif{font-family:var(--serif)}
+.case .ci svg .a{stroke:var(--wire)}
+.case .ci svg .b{stroke:var(--gold)}
+.case .ci svg .bf{fill:var(--gold)}
+.ic-gold{color:var(--gold)}
+
+/* 4ステップ帯 */
+.steplist{margin-top:22px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sl{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--hairline);border-radius:10px;padding:13px 14px}
+.sl .n{font-family:var(--serif);font-size:20px;color:var(--gold);font-weight:600;flex:0 0 auto}
+.sl .t{font-size:13px;font-weight:600;color:var(--heading);line-height:1.4}
+
+/* ============ セットアップ（主役） ============ */
+.prep{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:4px 0 30px}
+.prep .p{background:var(--card);border:1px solid var(--hairline);border-radius:12px;padding:16px 16px;position:relative}
+.prep .pn{position:absolute;top:14px;right:15px;font-family:var(--serif);font-size:13px;color:var(--gold)}
+.prep .pt{font-family:var(--serif);font-size:15px;color:var(--heading);font-weight:600;padding-right:22px}
+.prep .pd{font-size:12.5px;color:var(--text-soft);line-height:1.75;margin-top:7px}
+.prep .free{display:inline-block;margin-top:9px;font-size:10.5px;letter-spacing:.08em;color:var(--support);border:1px solid var(--hairline);border-radius:999px;padding:2px 9px}
+.prep .paid{color:var(--gold)}
+
+.stepper{position:relative}
+.stp{position:relative;padding:0 0 30px 60px}
+.stp:last-child{padding-bottom:0}
+.stp::before{content:"";position:absolute;left:19px;top:6px;bottom:-6px;width:2px;background:linear-gradient(var(--gold),rgba(182,155,103,.25))}
+.stp:last-child::before{display:none}
+.stp .node{position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;background:var(--forest);color:#fff;
+  font-family:var(--serif);font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;z-index:1;box-shadow:0 0 0 5px var(--bg)}
+.stp .stitle{font-family:var(--serif);font-size:clamp(17px,3.4vw,20px);color:var(--heading);font-weight:600;letter-spacing:.03em;line-height:1.45;padding-top:6px}
+.stp .stag{display:inline-block;font-size:10.5px;letter-spacing:.14em;color:var(--gold);font-weight:600;margin-bottom:2px}
+.stp .card{background:var(--card);border:1px solid var(--hairline);border-radius:12px;padding:16px 20px;margin-top:13px}
+
+.how{margin:2px 0}
+.how .row{display:flex;gap:13px;align-items:flex-start;margin-bottom:11px}
+.how .row:last-child{margin-bottom:0}
+.how .num{flex:0 0 auto;width:25px;height:25px;border-radius:50%;background:var(--tint);color:var(--heading);
+  border:1px solid var(--hairline);font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.how .rt{font-size:14.5px;line-height:1.8}
+.how .rt b{color:var(--heading)}
+.how .sub{display:block;font-size:13px;color:var(--text-soft);margin-top:3px;line-height:1.7}
+
+/* コールアウト各種 */
+.oneline{background:var(--forest);color:#fff;border-radius:11px;padding:15px 19px;font-size:14.5px;line-height:1.8;margin:16px 0}
+.oneline .lbl{font-size:10px;letter-spacing:.2em;color:var(--gold);display:block;margin-bottom:5px}
+.oneline b{color:#fff;border-bottom:2px solid var(--gold);padding-bottom:1px}
+.oneline a{color:#fff}
+
+.point{display:flex;gap:11px;align-items:flex-start;background:var(--point-bg);border-radius:10px;padding:13px 16px;margin:16px 0;font-size:13px;line-height:1.8;color:var(--point-ink)}
+.point .k{font-weight:700;flex:0 0 auto;letter-spacing:.06em}
+
+.trap{background:var(--trap-bg);border-left:3px solid var(--gold);border-radius:8px;padding:13px 16px;margin:14px 0;font-size:13.5px;line-height:1.85;color:var(--trap-ink)}
+.trap .th{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--heading);font-size:13px;letter-spacing:.04em;margin-bottom:5px}
+.trap .th svg{flex:0 0 auto}
+.trap .ok{color:var(--support);font-weight:700}
+.trap .ng{color:var(--gold);font-weight:700}
+.trap b{color:var(--heading)}
+.trap .os{display:inline-block;font-size:10.5px;letter-spacing:.1em;background:var(--forest);color:#fff;border-radius:999px;padding:1px 9px;margin-right:6px;vertical-align:middle}
+
+.example{background:var(--card);border:1px solid var(--hairline);border-left:3px solid var(--gold);border-radius:9px;padding:15px 19px;margin-top:14px}
+.example .el{display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.14em;color:var(--gold);font-weight:600;margin-bottom:8px}
+.example .avatar{width:21px;height:21px;border-radius:50%;background:var(--forest);color:#fff;font-family:var(--serif);font-size:11px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.example .ex{font-size:13.5px;line-height:1.85;color:var(--text)}
+.example .ex b{color:var(--heading)}
+
+.done{background:linear-gradient(150deg,var(--hero-from),var(--hero-to));color:#fff;border-radius:13px;padding:22px 24px;margin:26px 0 6px}
+.done .dh{font-family:var(--serif);font-size:18px;letter-spacing:.05em;color:#fff;display:flex;align-items:center;gap:10px}
+.done .dd{font-size:13.5px;line-height:1.9;color:rgba(255,255,255,.85);margin-top:9px}
+.done .dd b{color:var(--gold)}
+
+/* ============ 実例 ============ */
+.cases{margin-top:2px}
+.case{display:flex;gap:14px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--hairline)}
+.case:last-child{border-bottom:none}
+.case .ci{flex:0 0 auto;width:40px;height:40px;border-radius:10px;background:var(--tint);display:flex;align-items:center;justify-content:center}
+.case .ck{font-size:10.5px;color:var(--gold);letter-spacing:.14em;font-weight:600}
+.case .ct{font-size:14px;line-height:1.8;margin-top:2px}
+.case .ct b{color:var(--heading)}
+
+/* ============ これから増える ============ */
+.next-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px}
+.chip{background:var(--card);border:1px solid var(--hairline);border-radius:11px;padding:15px 17px;display:flex;align-items:flex-start;gap:12px}
+.chip .cst{flex:0 0 auto;font-size:10px;letter-spacing:.08em;font-weight:700;padding:3px 9px;border-radius:999px;margin-top:2px}
+.chip.live .cst{background:var(--forest);color:#fff}
+.chip.soon .cst{background:var(--tint);color:var(--text-soft);border:1px solid var(--hairline)}
+.chip .cx .cxt{font-size:14px;font-weight:600;color:var(--heading);line-height:1.45}
+.chip .cx .cxd{font-size:12.5px;color:var(--text-soft);line-height:1.7;margin-top:3px}
+.request{background:var(--point-bg);color:var(--point-ink);border-radius:11px;padding:16px 18px;margin-top:16px;font-size:13.5px;line-height:1.85}
+.request b{color:var(--heading)}
+
+/* ============ フッター ============ */
+footer{margin-top:56px;border-top:1px solid var(--hairline);background:var(--card)}
+footer .wrap{padding:26px 22px 40px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+footer .fb{display:flex;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.1em;color:var(--heading)}
+footer .fm{width:16px;height:16px;border:1.3px solid var(--gold);transform:rotate(45deg);position:relative;flex:0 0 auto}
+footer .fm::after{content:"";position:absolute;inset:4px;background:var(--gold)}
+footer .fn{font-size:11px;letter-spacing:.08em;color:var(--text-soft);line-height:1.7}
+
+/* 伝え方：入口カードのアイコン */
+.pico{display:block;margin-bottom:6px;line-height:0}
+/* 記録：掛け算ビジュアル */
+.mult{display:flex;align-items:stretch;gap:10px;margin:16px 0;flex-wrap:wrap}
+.mult .m{flex:1 1 150px;background:var(--card);border:1px solid var(--hairline);border-radius:12px;padding:15px 14px;text-align:center}
+.mult .m.eq{background:linear-gradient(150deg,var(--hero-from),var(--hero-to));border-color:transparent}
+.mult .mt{font-family:var(--serif);font-size:15px;color:var(--heading);font-weight:600}
+.mult .m.eq .mt{color:#fff}
+.mult .md{font-size:12px;color:var(--text-soft);line-height:1.7;margin-top:6px}
+.mult .m.eq .md{color:rgba(255,255,255,.85)}
+.mult .op{flex:0 0 auto;align-self:center;font-family:var(--serif);font-size:20px;color:var(--gold);font-weight:600}
+/* 記録：積み上がりバー（フィルもトークンで＝両テーマ可視） */
+.dgm .barf{fill:var(--wire)}
+/* 安全の注記 */
+.safe{display:flex;gap:12px;align-items:flex-start;background:var(--tint);border:1px solid var(--hairline);border-left:3px solid var(--support);border-radius:10px;padding:14px 17px;margin:18px 0;font-size:13.5px;line-height:1.85;color:var(--text)}
+.safe .si{flex:0 0 auto;color:var(--support);margin-top:1px;line-height:0}
+.safe b{color:var(--heading)}
+/* ============ レスポンシブ ============ */
+@media (max-width:680px){
+  body{font-size:15px}
+  .brand .bt{font-size:13.5px}
+  section.block{padding:40px 0 4px}
+  .tools,.prep,.steplist,.next-grid{grid-template-columns:1fr}
+  .steplist{gap:9px}
+  .stp{padding-left:52px;padding-bottom:26px}
+  .stp .node{width:36px;height:36px;font-size:16px}
+  .stp::before{left:17px}
+  .hero .wrap{padding:44px 22px 48px}
+  .mult{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ ヘッダー ============ -->
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mk"></span><span class="bt">AGAメディカルクリニック</span></a>
+    <nav>
+      <a href="#overview">全体像</a>
+      <a href="#setup">はじめの設定</a>
+      <a href="#talk">伝え方</a>
+      <a href="#record">記録</a>
+      <a href="#examples">実例</a>
+      <a href="#next">これから</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ ヒーロー ============ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="eyebrow">AGA MEDICAL CLINIC<span>|</span>AI GUIDE</div>
+    <div class="mk2"></div>
+    <h1>AIを、<br>あなたの毎日の相棒に。</h1>
+    <div class="grule"></div>
+    <div class="sub">はじめてのAI活用ガイド</div>
+    <div class="sub2">パソコンにClaude（クロード）とObsidian（オブシディアン）を入れて、相棒とつなぐところまで。むずかしくありません。ひとつずつ、いっしょに進めましょう。</div>
+    <span class="living"><span class="pulse"></span>このページは、質問をいただくたびに少しずつ増えていきます</span>
+  </div>
+</section>
+
+<div class="wrap">
+
+<!-- ============ 全体像 ============ -->
+<section class="block" id="overview">
+  <div class="eyebrow">ABOUT</div>
+  <h2 class="title">やることは、たった2つの道具をつなぐだけ。</h2>
+  <div class="rule"></div>
+  <p class="lead">
+    AIというと難しく聞こえますが、使うのは<b>2つの道具</b>だけ。
+    話しかけて動いてくれる<b>「相棒」</b>と、なんでもためておく<b>「倉庫」</b>。
+    この2つを一度つないでおけば、あとは思ったことを伝えるだけで、どんどん前に進みます。
+    まずは全体像を見て、そのあと<b>「はじめの設定」</b>を、いっしょに1つずつやっていきましょう。
+  </p>
+
+  <div class="tools">
+    <div class="tool">
+      <div class="tn"><span class="dot" style="background:var(--forest)"></span>Claude Code（クロード）</div>
+      <div class="td">話しかけると、調べたり・書いたり・作ったりしてくれる<b>「動く相棒」</b>。あなたが指示を出す相手です。</div>
+    </div>
+    <div class="tool">
+      <div class="tn"><span class="dot" style="background:var(--gold)"></span>Obsidian（オブシディアン）</div>
+      <div class="td">メモや資料をためておく<b>「自分専用の記憶の倉庫」</b>。ここに、どんどん蓄えていきます。</div>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <svg class="dgm" viewBox="0 0 900 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="あなたが相棒に伝え、相棒が倉庫にためて引き出す流れ図">
+      <defs>
+        <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path class="mkw" d="M0,0 L9,4.5 L0,9 Z"/></marker>
+        <marker id="arg" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path class="mkg" d="M0,0 L9,4.5 L0,9 Z"/></marker>
+      </defs>
+      <!-- あなた -->
+      <rect class="box" x="22" y="82" width="176" height="86" rx="14"/>
+      <circle class="g" cx="110" cy="114" r="12"/>
+      <path class="g" d="M92 142 a18 18 0 0 1 36 0"/>
+      <text class="t" x="110" y="160" text-anchor="middle" font-size="13">あなた（サロン）</text>
+      <!-- Claude Code -->
+      <rect class="hub" x="362" y="62" width="196" height="126" rx="16"/>
+      <text class="th serif" x="460" y="108" text-anchor="middle" font-size="19" font-weight="600">Claude Code</text>
+      <text class="tg" x="460" y="136" text-anchor="middle" font-size="12.5" letter-spacing="2">動く相棒</text>
+      <text x="460" y="160" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.75)">調べる・書く・作る</text>
+      <!-- Obsidian -->
+      <rect class="box" x="702" y="82" width="176" height="86" rx="14"/>
+      <rect class="gg" x="770" y="104" width="40" height="30" rx="4"/>
+      <path class="gg" d="M770 112 h13 l4 -5 h9"/>
+      <text class="t" x="790" y="160" text-anchor="middle" font-size="13">Obsidian（倉庫）</text>
+      <!-- 矢印 -->
+      <line class="wire" x1="198" y1="125" x2="356" y2="125" marker-end="url(#ar)"/>
+      <text class="t" x="277" y="114" text-anchor="middle" font-size="11.5">① スクショ・ことばで伝える</text>
+      <line class="wire" x1="558" y1="112" x2="696" y2="112" marker-end="url(#ar)"/>
+      <text class="t" x="627" y="102" text-anchor="middle" font-size="11">②つなぐ ③ためる</text>
+      <line class="wireg" x1="696" y1="142" x2="558" y2="142" marker-end="url(#arg)"/>
+      <text class="tg" x="627" y="162" text-anchor="middle" font-size="11">④ 引き出す</text>
+      <text class="ts" x="450" y="216" text-anchor="middle" font-size="12">あなたは「伝える」だけ。相棒が倉庫とつながって、ためて・引き出して、動きます。</text>
+    </svg>
+    <div class="dgm-cap">この1回の「つなぐ」設定が、今回いっしょにやることです。</div>
+  </div>
+
+  <div class="steplist">
+    <div class="sl"><span class="n">1</span><span class="t">スクショで伝える</span></div>
+    <div class="sl"><span class="n">2</span><span class="t">Obsidianをつなぐ</span></div>
+    <div class="sl"><span class="n">3</span><span class="t">フォルダにためる</span></div>
+    <div class="sl"><span class="n">4</span><span class="t">作業を引き出す</span></div>
+  </div>
+</section>
+
+<!-- ============ はじめの設定（主役） ============ -->
+<section class="block" id="setup">
+  <div class="eyebrow">GET STARTED — まず、これだけ</div>
+  <h2 class="title">はじめの設定を、ひとつずつ。</h2>
+  <div class="rule"></div>
+  <p class="lead">
+    「まず何をやったらいいの？」に、ここで丸ごとお答えします。<b>用意するものは3つ</b>だけ。
+    上から順番にやれば、今日じゅうに<b>相棒と倉庫がつながった状態</b>までいけます。
+    つまずきやすいところは、そのつど<span style="color:var(--gold);font-weight:700">つまづきポイント</span>で先回りして書いておきました。
+  </p>
+
+  <!-- 用意するもの -->
+  <div class="prep">
+    <div class="p">
+      <div class="pn">01</div>
+      <div class="pt">Claudeアプリ</div>
+      <div class="pd">相棒の本体。パソコンに入れるアプリです。</div>
+      <span class="free">ダウンロードは無料</span>
+    </div>
+    <div class="p">
+      <div class="pn">02</div>
+      <div class="pt">Claudeの有料プラン</div>
+      <div class="pd">相棒（Claude Code）を動かすための契約。無料では使えません。</div>
+      <span class="free paid">月額 約20ドル〜</span>
+    </div>
+    <div class="p">
+      <div class="pn">03</div>
+      <div class="pt">Obsidian</div>
+      <div class="pd">記憶の倉庫。メモや資料をためておくアプリです。</div>
+      <span class="free">無料</span>
+    </div>
+  </div>
+
+  <div class="stepper">
+
+    <!-- STEP 1 -->
+    <div class="stp">
+      <div class="node">1</div>
+      <span class="stag">STEP 1</span>
+      <div class="stitle">Claudeの「アプリ版」をパソコンに入れる</div>
+      <div class="card">
+        <div class="how">
+          <div class="row"><span class="num">1</span><span class="rt">ブラウザで <span class="u">claude.ai/download</span> を開く</span></div>
+          <div class="row"><span class="num">2</span><span class="rt">自分のパソコンに合うほうをダウンロード<span class="sub">Mac（マック）版／Windows（ウィンドウズ）版、どちらか。パソコンが自動で見分けてくれます。</span></span></div>
+          <div class="row"><span class="num">3</span><span class="rt">ダウンロードしたファイルを開いてインストール<span class="sub">Mac＝Claudeのアイコンを「アプリケーション」フォルダにドラッグ。Windows＝ダウンロードしたファイルをダブルクリックして、案内どおり「次へ」を押していくだけ。</span></span></div>
+          <div class="row"><span class="num">4</span><span class="rt">アプリを開いて、Claudeのアカウントで<b>ログイン</b><span class="sub">初めてなら、メールアドレスかGoogleアカウントで登録できます。</span></span></div>
+        </div>
+        <div class="trap">
+          <div class="th"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ic-gold"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>つまづきポイント</div>
+          <b>「ブラウザで使うClaude」と「アプリ版」は別物</b>です。今回は必ず、パソコンにインストールする<b>“アプリ版（デスクトップアプリ）”</b>を入れてください。ブラウザのお気に入りに入れるだけではつながりません。
+          <div style="margin-top:9px"><span class="os">Windowsの方だけ</span>先に <span class="u">git-scm.com/downloads/win</span> から「Git for Windows」も入れておきます（案内どおり進めるだけ）。これが無いと相棒がうまく動かないことがあります。<b>Macの方は不要</b>です。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="stp">
+      <div class="node">2</div>
+      <span class="stag">STEP 2</span>
+      <div class="stitle">有料プランにする（相棒を動かす鍵）</div>
+      <div class="card">
+        <div class="oneline"><span class="lbl">一言でいうと</span>相棒（Claude Code）は<b>有料プランで動くようになります</b>。まず契約をすませておくと、あとが迷いません。</div>
+        <div class="how">
+          <div class="row"><span class="num">1</span><span class="rt">アプリ（またはブラウザ）の設定から<b>「プランをアップグレード」</b>を開く</span></div>
+          <div class="row"><span class="num">2</span><span class="rt"><b>Claude Pro（プロ）</b>を選ぶ<span class="sub">個人でしっかり使う方の定番。月額の目安は約20ドル（年払いなら約17ドル／月）。もっとたっぷり使うなら上位の Max（月100ドル〜）もあります。</span></span></div>
+          <div class="row"><span class="num">3</span><span class="rt">クレジットカードを登録して完了</span></div>
+        </div>
+        <div class="trap">
+          <div class="th"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ic-gold"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>つまづきポイント</div>
+          <b>無料プランのままだと</b>、次のSTEP 5で「フォルダを選ぶ」ところまで進めません。相棒を使うなら、先に有料にしておくのが近道です。<br>※料金は変わることがあります。契約画面に出る<b>最新の金額</b>をご確認ください（このページは2026年7月時点）。
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="stp">
+      <div class="node">3</div>
+      <span class="stag">STEP 3</span>
+      <div class="stitle">Obsidian（倉庫アプリ）を入れる</div>
+      <div class="card">
+        <div class="how">
+          <div class="row"><span class="num">1</span><span class="rt">ブラウザで <span class="u">obsidian.md/download</span> を開く</span></div>
+          <div class="row"><span class="num">2</span><span class="rt">自分のパソコン用（Mac／Windows）をダウンロードしてインストール</span></div>
+          <div class="row"><span class="num">3</span><span class="rt">これでOK。<b>Obsidianは無料</b>で使えます</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="stp">
+      <div class="node">4</div>
+      <span class="stag">STEP 4 ／ つまづき所①</span>
+      <div class="stitle">母体になる「倉庫フォルダ」を、1つ作る</div>
+      <div class="card">
+        <div class="oneline"><span class="lbl">一言でいうと</span>倉庫（＝<b>Vault／ボールト</b>）とは、パソコンの中の<b>“ただ1つのフォルダ”</b>。この中に、これから全部たまっていきます。</div>
+        <p style="font-size:13.5px;color:var(--text-soft);line-height:1.8;margin:2px 0 12px">いちばんかんたんなのは、Obsidianに作ってもらう方法です。</p>
+        <div class="how">
+          <div class="row"><span class="num">1</span><span class="rt">Obsidianを開く</span></div>
+          <div class="row"><span class="num">2</span><span class="rt">最初の画面で <b>「Create new vault（新しい保管庫を作る）」</b> を選ぶ</span></div>
+          <div class="row"><span class="num">3</span><span class="rt">名前を入れる<span class="sub">例：<span class="u">AGAOS</span>。あとで変えられるので何でもOK。半角の英数字にしておくと、後がラクです。</span></span></div>
+          <div class="row"><span class="num">4</span><span class="rt"><b>「Browse」</b>で保存する場所を選ぶ<span class="sub">迷ったら「書類（Documents）」でOK。</span></span></div>
+          <div class="row"><span class="num">5</span><span class="rt"><b>「Create」</b>を押す → 倉庫フォルダが1つ、できあがり</span></div>
+        </div>
+        <div class="point"><span class="k">できたものの正体</span><span>たとえば <span class="u">書類（Documents）／AGAOS</span> という<b>“フォルダ”が1つ</b>できています。これが、これからずっと使う倉庫です。中身は今は空っぽでかまいません。</span></div>
+        <div class="trap">
+          <div class="th"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ic-gold"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>つまづきポイント</div>
+          倉庫は<b>あちこちに作らず、1つだけ</b>。場所は<b>「書類（Documents）」</b>に置くのがおすすめです。いろんな場所に作ると、次のSTEP 5で「どれだっけ？」と迷子になります。
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="stp">
+      <div class="node">5</div>
+      <span class="stag">STEP 5 ／ つまづき所②（いちばん大事）</span>
+      <div class="stitle">倉庫と相棒（Claude Code）を、つなぐ</div>
+      <div class="card">
+        <div class="oneline"><span class="lbl">一言でいうと</span>Claudeのアプリで、さっき作った<b>“倉庫フォルダ”を開く</b>だけ。ここが「どれを選ぶ？」で一番迷うところなので、ゆっくりいきましょう。</div>
+        <div class="how">
+          <div class="row"><span class="num">1</span><span class="rt">Claudeデスクトップアプリを開く</span></div>
+          <div class="row"><span class="num">2</span><span class="rt">画面の上にあるタブから <b>「Code（コード）」</b> を選ぶ<span class="sub">この「Code」が、相棒＝Claude Codeの作業場です。</span></span></div>
+          <div class="row"><span class="num">3</span><span class="rt">動かす場所は <b>「Local（ローカル）」</b> を選ぶ<span class="sub">＝あなたのパソコンの中で動かす、という意味です。</span></span></div>
+          <div class="row"><span class="num">4</span><span class="rt"><b>「Select folder（フォルダを選ぶ）」</b> を押す</span></div>
+          <div class="row"><span class="num">5</span><span class="rt">さっき作った<b>倉庫フォルダ</b>（例：書類／AGAOS）を選んで「開く」</span></div>
+          <div class="row"><span class="num">6</span><span class="rt">最後にモデルを選ぶ画面が出たら、<b>そのままでOK</b></span></div>
+        </div>
+        <div class="trap">
+          <div class="th"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ic-gold"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>いちばんのつまづきポイント：選ぶのは「フォルダ」です</div>
+          選ぶのは、倉庫<b>まるごとの“フォルダ”</b>。ファイルではありません。<br>
+          <span class="ng">✗ ちがう</span>　中の1つのメモ（<span class="u">○○.md</span>）をダブルクリックして選ぶ<br>
+          <span class="ng">✗ ちがう</span>　倉庫の中にある小さいフォルダ“だけ”を選ぶ<br>
+          <span class="ok">○ 正しい</span>　倉庫フォルダ“そのもの”を1回クリックして「開く」（中に入って選ばない）
+        </div>
+        <div class="point"><span class="k">つながった合図</span><span>相棒に<b>「この倉庫に“はじめまして”というメモを作って」</b>と頼んでみてください。倉庫の中にファイルができれば、連携は成功です。</span></div>
+        <div class="example">
+          <div class="el"><span class="avatar">山</span>山本和幸の使い方</div>
+          <div class="ex">「山本は『<b>AGAOS</b>』という1つの倉庫に、経営のすべて——数字・打ち合わせ・アイデア——をためて、そこで相棒と仕事をしています。<b>倉庫と相棒がつながっている</b>から、何を聞いてもすぐ話が通じます。最初のこの設定さえすめば、あとはずっと開くだけです。」</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="done">
+    <div class="dh"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ic-gold"><path d="M20 6 9 17l-5-5"/></svg>これで準備完了です</div>
+    <div class="dd">おつかれさまでした。あとは上の<b>「全体像（たった4つ）」</b>に戻って、<b>スクショを送る・話しかける</b>だけ。今日から相棒が、あなたの毎日を手伝ってくれます。つまずいたら、その画面をそのままスクショして相棒に見せて聞けば大丈夫です。</div>
+  </div>
+</section>
+
+<!-- ============ 伝え方（詰まっても、あきらめない） ============ -->
+<section class="block" id="talk">
+  <div class="eyebrow">HOW TO TALK — 詰まっても、あきらめない</div>
+  <h2 class="title">うまく言えなくて、大丈夫。<br>「わからない」を、そのまま話す。</h2>
+  <div class="rule"></div>
+  <p class="lead">
+    使っていて<b>いちばん多いのは、「わからない」から手が止まってしまう</b>こと。でも実は、その<b>「わからない」を、そのまま相棒に伝えることが何より大事</b>です。
+    きれいな指示も、正しい言葉もいりません。人に「これ、どうしたらいい？」と相談するように、思ったまま話しかけてみてください。
+  </p>
+
+  <div class="oneline"><span class="lbl">いちばん大事なこと</span>「うまく言えない」「どこが分からないのかも分からない」——<b>その状態ごと、話していい</b>。あきらめずに話すほど、相棒は動いてくれます。</div>
+
+  <div class="diagram">
+    <svg class="dgm" viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="「わからない」と話しかけると相棒が動いてくれる。違ってももう一度話す、という会話ループの図">
+      <defs>
+        <marker id="ar-t" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path class="mkw" d="M0,0 L9,4.5 L0,9 Z"/></marker>
+        <marker id="arg-t" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path class="mkg" d="M0,0 L9,4.5 L0,9 Z"/></marker>
+      </defs>
+      <rect class="box" x="24" y="60" width="184" height="98" rx="14"/>
+      <text class="t" x="116" y="102" text-anchor="middle" font-size="14">あなた</text>
+      <text class="ts" x="116" y="128" text-anchor="middle" font-size="12">「わからない…」</text>
+      <rect class="hub" x="360" y="52" width="200" height="114" rx="16"/>
+      <text class="th serif" x="460" y="100" text-anchor="middle" font-size="19" font-weight="600">Claude Code</text>
+      <text x="460" y="128" text-anchor="middle" font-size="12" fill="rgba(255,255,255,.8)">話を聞いて、動く</text>
+      <rect class="box" x="716" y="60" width="172" height="98" rx="14"/>
+      <text class="t" x="802" y="100" text-anchor="middle" font-size="14">できた！</text>
+      <text class="ts" x="802" y="125" text-anchor="middle" font-size="11">ファイル・ページ・設定</text>
+      <line class="wire" x1="208" y1="106" x2="354" y2="106" marker-end="url(#ar-t)"/>
+      <text class="t" x="281" y="94" text-anchor="middle" font-size="11">① そのまま話す</text>
+      <line class="wire" x1="560" y1="106" x2="710" y2="106" marker-end="url(#ar-t)"/>
+      <text class="t" x="635" y="94" text-anchor="middle" font-size="11">② 動いてくれる</text>
+      <path class="wireg" d="M802 158 V212 H116 V164" marker-end="url(#arg-t)"/>
+      <text class="tg" x="459" y="232" text-anchor="middle" font-size="12">③ 違っても、あきらめず もう一度そのまま話すだけ</text>
+    </svg>
+    <div class="dgm-cap">会話を続けるほど、形になっていきます。「止まらないこと」が、いちばんのコツ。</div>
+  </div>
+
+  <p class="lead" style="margin-top:10px">伝える入口は、次の<b>3つ。どれでもOK</b>。とくに<b>声</b>がいちばんラクです。</p>
+  <div class="prep">
+    <div class="p">
+      <span class="pico ic-gold"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v3"/></svg></span>
+      <div class="pt">声で話す</div>
+      <div class="pd"><b>いちばんラク。</b>Typeless（タイプレス）などの音声サービスを使うと、打たずに“話すだけ”。人に相談するように語りかけられます。</div>
+    </div>
+    <div class="p">
+      <span class="pico ic-gold"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="9.5" r="1.5"/></svg></span>
+      <div class="pt">画面を見せる</div>
+      <div class="pd">言葉にしづらいものは<b>スクショ（画面の写真）</b>を貼るだけ。「これ」で伝わります。</div>
+    </div>
+    <div class="p">
+      <span class="pico ic-gold"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/></svg></span>
+      <div class="pt">文字で打つ</div>
+      <div class="pd">もちろん、キーボードで打ってもOK。短いひとことで大丈夫です。</div>
+    </div>
+  </div>
+
+  <div class="point"><span class="k">気づき</span><span>スクショは、<b>片手でパッと押せる“自分だけのショートカット”</b>にしておくと、撮るハードルが一気に下がります。やり方が分からなくても大丈夫——<b>「クロード（Claude）に聞いて、ショートカットを設定して」と頼めば、そのまま設定してくれます</b>。「設定のしかた自体」も相棒に頼める、と気づくと、ぐっとラクになります。</span></div>
+
+  <div class="example">
+    <div class="el"><span class="avatar">山</span>山本和幸の使い方</div>
+    <div class="ex">「山本も、分からない時は<b>『ちょっとこれ、分からないんだけど…』と、そのまま話しかける</b>ところから始めます。うまく言えなくても、あきらめずに会話を続ける。すると相棒が、ファイルを動かしたり、ページを作ったりして、形にしてくれます。<b>大事なのは、止まらずに話すこと</b>だけです。」</div>
+  </div>
+</section>
+
+<!-- ============ 記録（第二の脳にたまる） ============ -->
+<section class="block" id="record">
+  <div class="eyebrow">SECOND BRAIN — 記録が、第二の脳になる</div>
+  <h2 class="title">やった仕事は、消えない。<br>あなたの「第二の脳」に、たまっていく。</h2>
+  <div class="rule"></div>
+  <p class="lead">
+    もうひとつ、大事な口ぐせがあります。<b>「これ、記録しておいて」</b>。この一言で、やったことが倉庫（Obsidian）に残ります。
+    1回きりで忘れられるのではなく、<b>あなた専用の知識として、どんどん積み上がっていく</b>。ためるほど、相棒はあなたのことを分かってくれます。
+  </p>
+
+  <div class="oneline"><span class="lbl">口ぐせにしたい一言</span>「これ、<b>記録しておいて</b>」。——やった分だけ、あなたの<b>第二の脳</b>が育っていきます。</div>
+
+  <p class="lead" style="margin-top:10px">なぜ、この2つの<b>掛け算</b>がすごいのか。</p>
+  <div class="mult">
+    <div class="m"><div class="mt">Claude Code</div><div class="md">動く力<br>調べる・書く・作る</div></div>
+    <div class="op">×</div>
+    <div class="m"><div class="mt">Obsidian</div><div class="md">ためる力<br>ぜんぶ残る・消えない</div></div>
+    <div class="op">＝</div>
+    <div class="m eq"><div class="mt">第二の脳</div><div class="md">使うほど賢くなる、あなた専用の相棒</div></div>
+  </div>
+  <p class="lead" style="font-size:14px;color:var(--text-soft);margin-top:2px">動くだけなら、毎回ゼロから。ためるだけなら、動かない。<b>両方そろって初めて</b>、「使うほど賢くなる相棒」になります。</p>
+
+  <div class="diagram">
+    <svg class="dgm" viewBox="0 0 900 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="使うほど記録が積み上がっていく右肩上がりの図">
+      <defs>
+        <marker id="ar-c" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path class="mkg" d="M0,0 L9,4.5 L0,9 Z"/></marker>
+      </defs>
+      <line class="g" x1="66" y1="198" x2="846" y2="198"/>
+      <rect class="barf" x="100" y="158" width="86" height="40" rx="4"/>
+      <rect class="barf" x="252" y="128" width="86" height="70" rx="4"/>
+      <rect class="barf" x="404" y="98" width="86" height="100" rx="4"/>
+      <rect class="barf" x="556" y="68" width="86" height="130" rx="4"/>
+      <rect class="barf" x="708" y="42" width="86" height="156" rx="4"/>
+      <text class="ts" x="143" y="220" text-anchor="middle" font-size="11">1回目</text>
+      <text class="ts" x="295" y="220" text-anchor="middle" font-size="11">2回目</text>
+      <text class="ts" x="447" y="220" text-anchor="middle" font-size="11">3回目</text>
+      <text class="ts" x="599" y="220" text-anchor="middle" font-size="11">4回目</text>
+      <text class="ts" x="751" y="220" text-anchor="middle" font-size="11">…と続く</text>
+      <path class="wireg" d="M120 150 L775 46" marker-end="url(#ar-c)"/>
+      <text class="tg" x="470" y="34" text-anchor="middle" font-size="12">使うほど、あなた専用の知識が増えていく</text>
+    </svg>
+    <div class="dgm-cap">1回やった仕事は消えずに、あなた専用の知識としてたまっていきます。減りません。</div>
+  </div>
+
+  <div class="safe">
+    <span class="si"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+    <div>しかも、ためる先は<b>あなたのパソコンの中の“あなたのフォルダ”</b>。どこか外へ預けているわけではありません。<b>ためても、危険が増えることはありません</b>。むしろ、自分の手元に自分の知識が整理されて残っていくだけ——安心して、どんどん貯めていってください。</div>
+  </div>
+
+  <div class="example">
+    <div class="el"><span class="avatar">山</span>山本和幸の使い方</div>
+    <div class="ex">「山本は、打ち合わせも、数字も、思いつきも、ぜんぶ<b>『記録しておいて』の一言で倉庫に残して</b>います。半年前の話でも、相棒がすぐ思い出してくれる。<b>やればやるほど積み上がって、二度と同じ説明をしなくてよくなる</b>——これが、いちばん効いています。」</div>
+  </div>
+</section>
+
+<!-- ============ 実例 ============ -->
+<section class="block" id="examples">
+  <div class="eyebrow">REAL EXAMPLES</div>
+  <h2 class="title">山本和幸の、じっさいの使い方。</h2>
+  <div class="rule"></div>
+  <div class="cases">
+    <div class="case">
+      <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24"><path class="a" d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z" fill="none" stroke-width="1.6"/><path class="b" d="M6 11a6 6 0 0 0 12 0M12 17v4" fill="none" stroke-width="1.6"/></svg></div>
+      <div><div class="ck">MEETING</div><div class="ct"><b>会議の録音を投げる</b> → そのまま議事録に整理。決まったこと・次にやることまで、自動でまとまる。</div></div>
+    </div>
+    <div class="case">
+      <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24"><rect class="a" x="5" y="3" width="14" height="18" rx="2" fill="none" stroke-width="1.6"/><path class="b" d="M8 8h8M8 12h8M8 16h5" fill="none" stroke-width="1.6"/></svg></div>
+      <div><div class="ck">EXPENSE</div><div class="ct"><b>レシートの写真を投げる</b> → 月々の経費の表に。金額も日付も、拾って並べてくれる。</div></div>
+    </div>
+    <div class="case">
+      <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24"><path class="a" d="M4 20V8M10 20V4M16 20v-7M22 20H2" fill="none" stroke-width="1.6"/><circle class="bf" cx="16" cy="9" r="1.6"/></svg></div>
+      <div><div class="ck">NUMBERS</div><div class="ct"><b>経営の数字をためる</b> → 週の報告やKPIを相棒がまとめる。「今どうなってる？」に即こたえる。</div></div>
+    </div>
+    <div class="case">
+      <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24"><path class="b" d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2" fill="none" stroke-width="1.6"/><circle class="a" cx="12" cy="12" r="4" fill="none" stroke-width="1.6"/></svg></div>
+      <div><div class="ck">IDEA</div><div class="ct"><b>思いつきを放り込む</b> → その場で倉庫へ。あとで「あの話どうする？」と引き出して形にする。</div></div>
+    </div>
+    <div class="case">
+      <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24"><path class="a" d="M3 12a9 9 0 1 1 3 6.7" fill="none" stroke-width="1.6"/><path class="b" d="M3 20v-5h5" fill="none" stroke-width="1.6"/></svg></div>
+      <div><div class="ck">RESUME</div><div class="ct"><b>「続きやろう」の一言</b> → 前回の続きから再開。何十件もの仕事を、並行して回す土台に。</div></div>
+    </div>
+    <div class="case">
+      <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24"><path class="a" d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" fill="none" stroke-width="1.6"/><path class="a" d="M12 3v2.6M12 18.4V21M3 12h2.6M18.4 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8" fill="none" stroke-width="1.6"/><circle class="bf" cx="12" cy="12" r="1.1"/></svg></div>
+      <div><div class="ck">AUTOMATION</div><div class="ct"><b>「毎回やってる作業、自動にしたい」と相談する</b> → 相棒が“仕組み”そのものを作る。手作業だった発送・入力・集計が、気づけば自動で回るように。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ これから増える ============ -->
+<section class="block" id="next">
+  <div class="eyebrow">GROWING GUIDE</div>
+  <h2 class="title">このページは、これから増えていきます。</h2>
+  <div class="rule"></div>
+  <p class="lead">
+    ここまでが第一弾（はじめの設定）です。これから<b>「もっとここを詳しく知りたい」</b>という声をいただくたびに、
+    このページに解説を足していきます。少しずつ、あなたの「できること」が増えていく——そんな育つガイドです。
+  </p>
+  <div class="next-grid">
+    <div class="chip live"><span class="cst">公開中</span><div class="cx"><div class="cxt">はじめの設定</div><div class="cxd">アプリの導入から、倉庫と相棒をつなぐまで。</div></div></div>
+    <div class="chip live"><span class="cst">公開中</span><div class="cx"><div class="cxt">伝え方 — あきらめない</div><div class="cxd">「わからない」を、声・画面・文字でそのまま相棒に伝えるコツ。</div></div></div>
+    <div class="chip live"><span class="cst">公開中</span><div class="cx"><div class="cxt">記録 — 第二の脳にためる</div><div class="cxd">やった仕事が消えずに積み上がる。Claude×Obsidianの掛け算。</div></div></div>
+    <div class="chip soon"><span class="cst">準備中</span><div class="cx"><div class="cxt">会議の録音を議事録にする</div><div class="cxd">録音を投げて、決定事項まで自動でまとめてもらう。</div></div></div>
+    <div class="chip soon"><span class="cst">準備中</span><div class="cx"><div class="cxt">レシート写真を経費表にする</div><div class="cxd">写真を投げるだけで、月々の経費の表に整える。</div></div></div>
+    <div class="chip soon"><span class="cst">準備中</span><div class="cx"><div class="cxt">「続きから」で再開するコツ</div><div class="cxd">倉庫にためた記録から、前回の続きを呼び出す。</div></div></div>
+    <div class="chip soon"><span class="cst">準備中</span><div class="cx"><div class="cxt">フォルダの分け方・ため方</div><div class="cxd">迷わずためるための、シンプルな倉庫の整え方。</div></div></div>
+  </div>
+  <div class="request">💬 <b>知りたいことのリクエスト、歓迎です。</b>「ここをもっと詳しく」「これのやり方が知りたい」——いただいた声から、この一覧に順番に追加していきます。</div>
+</section>
+
+</div><!-- /.wrap -->
+
+<!-- ============ フッター ============ -->
+<footer>
+  <div class="wrap">
+    <div class="fb"><span class="fm"></span>医療法人友広会　AGAメディカルクリニック</div>
+    <div class="fn">はじめてのAI活用ガイド<br>最終更新：2026年7月9日（「伝え方」「記録」の章を追加）・ 内容は随時アップデートされます</div>
+  </div>
+</footer>
+
+<script>
+/* ナビのスクロール連動（プログレッシブ強化：JS無効でも動作に支障なし） */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('nav a[href^="#"]'));
+  var map={}; links.forEach(function(a){var id=a.getAttribute('href').slice(1); if(id){map[id]=a;}});
+  var secs=Object.keys(map).map(function(id){return document.getElementById(id);}).filter(Boolean);
+  if(!('IntersectionObserver' in window)||!secs.length){return;}
+  var io=new IntersectionObserver(function(ents){
+    ents.forEach(function(e){
+      if(e.isIntersecting){ links.forEach(function(a){a.classList.remove('active');}); var a=map[e.target.id]; if(a){a.classList.add('active');} }
+    });
+  },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+  secs.forEach(function(s){io.observe(s);});
+})();
+</script>
+</body>
+</html>
